@@ -1,0 +1,2 @@
+2020-07-13T01:32:25+00:00 CRITICAL syntax error, unexpected 'console' (T_STRING), expecting ';' or ',' in /var/www/html/wp-content/themes/storefront/functions.php on line 145
+
