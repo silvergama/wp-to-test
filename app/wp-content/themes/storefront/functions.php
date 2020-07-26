@@ -72,3 +72,33 @@ if ( version_compare( get_bloginfo( 'version' ), '4.7.3', '>=' ) && ( is_admin()
  * Note: Do not add any custom code here. Please use a custom plugin so that your customizations aren't lost during updates.
  * https://github.com/woocommerce/theme-customisations
  */
+add_action( 'wp_enqueue_scripts', 'my_enqueue' );
+function my_enqueue() {
+
+
+    wp_enqueue_script( 'ajax-script', get_template_directory_uri() . '/assets/js/myscript.js', array('jquery') );
+
+    wp_localize_script( 'ajax-script', 'ajax_object',
+            array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+}
+
+add_action('woocommerce_cart_calculate_fees' , 'add_user_discounts');
+function add_user_discounts( WC_Cart $cart ){
+    $payment_method = WC()->session->get('payment_method');
+    if($payment_method == 'banking-ticket') {
+        $discount = $cart->get_subtotal() * 0.05;
+        $cart->add_fee( 'Test discount 50%', -$discount);
+    }
+}
+
+add_action("wp_ajax_nopriv_get_my_option", "get_my_option");
+add_action("wp_ajax_get_my_option", "get_my_option");
+function get_my_option()
+{
+    $payment_method = $_POST['payment_method'];
+    WC()->session->set('payment_method', $payment_method);
+
+    wp_send_json($payment_method);
+    die();
+}
+
