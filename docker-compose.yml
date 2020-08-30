@@ -18,7 +18,7 @@ services:
       - db
     image: silvergama/wordpress:wp-cli
     volumes:
-      - ./app:/var/www/html/wp-content/plugins/my-custom-plugin
+      - ./my-custom-plugin:/var/www/html/wp-content/plugins/my-custom-plugin
       - wp_uploads:/var/www/html/wp-content/uploads
       - wp_themes:/var/www/html/wp-content/themes
     ports:
